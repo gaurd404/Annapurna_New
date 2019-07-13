@@ -18,12 +18,14 @@ def create_app(test_config=None):
 	except OSError:
 		pass
 
-	@app.route('/')
+	@app.route('/index')
 	def index():
-	    return render_template('Homepage.html')
+	    return render_template('Homepage.html')    
 
-	@app.route('/signup')
-	def signup():
-		return render_template('signup.html')
+	from . import db
+	db.init_app(app)
 
-	return app	
+	from . import auth
+	app.register_blueprint(auth.bp)
+
+	return app
